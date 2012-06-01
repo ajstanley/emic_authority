@@ -23,47 +23,42 @@ function authority_membership(&$form_state, $pid) {
     '#type' => 'hidden',
     '#value' => $collection_key,
   );
-  $form['collections'] = array(
-    '#type' => 'fieldset',
-    '#collapsed' => true,
-    '#collapsible' => true,
-    '#title' => t('Collection Membership'),
-  );
 
-  $form['collections']['collection_add'] = array(
+
+  $form['collection_add'] = array(
     '#type' => 'fieldset',
     '#collapsed' => true,
     '#collapsible' => true,
     '#title' => t('Add This Authority to Another Collection'),
   );
-  $form['collections']['collection_add']['new_collection'] = array(
+  $form['collection_add']['new_collection'] = array(
     '#title' => 'New Collection',
     '#description' => t("Add a to new collection"),
     '#type' => 'select',
     '#options' => $potential_collections,
   );
 
-  $form['collections']['collection_add']['submit'] = array(
+  $form['collection_add']['submit'] = array(
     '#type' => 'submit',
     '#id' => 'add_collection',
     '#value' => t('Add Authority to New Collection'),
   );
 
   if (count($current_collections) > 1) {
-    $form['collections']['collection_remove'] = array(
+    $form['collection_remove'] = array(
       '#type' => 'fieldset',
       '#collapsed' => true,
       '#collapsible' => true,
       '#title' => t('Remove Authority from Collection'),
     );
 
-    $form['collections']['collection_remove']['current'] = array(
+    $form['collection_remove']['current'] = array(
       '#title' => 'Current Memberships',
       '#type' => 'select',
       '#options' => $current_collections,
     );
 
-    $form['collections']['collection_remove']['submit'] = array(
+    $form['collection_remove']['submit'] = array(
       '#type' => 'submit',
       '#id' => 'remove_collection',
       '#value' => t('Remove Authority from This Collection'),
