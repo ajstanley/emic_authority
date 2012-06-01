@@ -1,0 +1,26 @@
+<?php
+
+function emic_authority_islandora_tabs($content_models, $pid) {
+module_load_include('inc','emic_authority','authority_membership');
+  $content_model_pids = array();
+  foreach ($content_models as $content_model) {
+    $content_model_pids[] = $content_model->pid;
+  }
+
+  $allowed = array(
+    'islandora:event-entityCModel',
+    'islandora:organization-entityCModel',
+    'islandora:person-entityCModel',
+    'islandora:place-entityCModel',
+  );
+  $qualified = array_intersect($allowed, $content_model_pids);
+  if (is_array($qualified)) {
+    $tabset['authority_tab'] = array(
+      '#type' => 'tabpage',
+      '#title' => t('Manage Authorities'),
+      '#content' => drupal_get_form('authority_membership', $pid),
+      '#weight' => 25,
+    );
+    return $tabset;
+  }
+}

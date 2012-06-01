@@ -1,0 +1,7 @@
+; $Id$
+name = Authority Collection Management
+description = allows authority objects to be members of multiple collections
+dependencies[] = fedora_repository
+dependencies[] = islandora_book
+package = Emic Tools
+core = 6.x
