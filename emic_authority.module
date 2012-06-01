@@ -14,7 +14,7 @@ module_load_include('inc','emic_authority','authority_membership');
     'islandora:place-entityCModel',
   );
   $qualified = array_intersect($allowed, $content_model_pids);
-  if (is_array($qualified)) {
+  if (is_array($qualified && count($qualified >0))) {
     $tabset['authority_tab'] = array(
       '#type' => 'tabpage',
       '#title' => t('Manage Authorities'),
