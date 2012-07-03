@@ -1,7 +1,7 @@
 <?php
 
 function emic_authority_islandora_tabs($content_models, $pid) {
-module_load_include('inc','emic_authority','authority_membership');
+  module_load_include('inc', 'emic_authority', 'authority_membership');
   $content_model_pids = array();
   foreach ($content_models as $content_model) {
     $content_model_pids[] = $content_model->pid;
@@ -14,7 +14,7 @@ module_load_include('inc','emic_authority','authority_membership');
     'islandora:place-entityCModel',
   );
   $qualified = array_intersect($allowed, $content_model_pids);
-  if (!empty($qualified )) {
+  if (!empty($qualified)) {
     $tabset['authority_tab'] = array(
       '#type' => 'tabpage',
       '#title' => t('Manage Authorities'),
@@ -23,4 +23,29 @@ module_load_include('inc','emic_authority','authority_membership');
     );
     return $tabset;
   }
+}
+
+function emic_authority_form_fedora_repository_ingest_form_alter(&$form, &$form_state) {
+
+  if ($form['content_model_pid']['#value'] == 'islandora:person-entityCModel') {
+    $form['#submit'][] = 'islandora_authority_relabel';
+  }
+}
+
+function emic_authority_form_fedora_repository_edit_qdc_form_alter(&$form, &$form_state) {
+
+  if ($form['content_model_pid']['#value'] == 'islandora:person-entityCModel') {
+    $form['#submit'][] = 'islandora_authority_relabel';
+  }
+}
+
+function islandora_authority_relabel($form, &$form_state) {
+  global $user;
+  module_load_include('inc', 'fedora_repository', 'api/fedora_item');
+  $pid = $form_state['values']['pid'];
+  $item = new Fedora_Item($pid);
+  $dc = $item->get_datastream_dissemination('DC');
+  $xml = simplexml_load_string($dc);
+  $subjects = $xml->xpath('//dc:subject');
+  $item->modify_object($subjects[0], 'A', $user->uid);
 }
